@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	chunker "github.com/ipfs/go-ipfs-chunker"
+	cid "github.com/ipfs/go-cid"
 	ipld "github.com/ipfs/go-ipld-format"
 	ufs "github.com/ipfs/go-unixfs"
 	"github.com/ipfs/go-unixfs/importer"
@@ -42,6 +43,25 @@ func New(ctx context.Context, ds ipld.DAGService) (*Unixfs, error) {
 	}
 
 	if err := dir.AddChild(ctx, RefsPath, ufs.EmptyDirNode()); err != nil {
+		return nil, err
+	}
+
+	return &Unixfs{ctx, ds, dir}, nil
+}
+
+// Load returns an existing unixfs using the directory with the given id.
+func Load(ctx context.Context, ds ipld.DAGService, id cid.Cid) (*Unixfs, error) {
+	node, err := ds.Get(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	dir, err := ufsio.NewDirectoryFromNode(ds, node)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := ds.Add(ctx, ufs.EmptyDirNode()); err != nil {
 		return nil, err
 	}
 
