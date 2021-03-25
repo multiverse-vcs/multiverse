@@ -52,6 +52,10 @@ func (r *ReferenceStorage) Reference(n plumbing.ReferenceName) (*plumbing.Refere
 	if err == os.ErrNotExist {
 		return nil, plumbing.ErrReferenceNotFound
 	}
+
+	if err != nil {
+		return nil, err
+	}
 	defer fr.Close()
 
 	target, err := io.ReadAll(fr)

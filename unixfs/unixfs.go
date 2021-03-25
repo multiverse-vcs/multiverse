@@ -85,7 +85,12 @@ func (fs *Unixfs) Read(fpath string) (io.ReadCloser, error) {
 		return nil, err
 	}
 
-	return ufsio.NewDagReader(fs.ctx, node, fs.ds)
+	r, err := ufsio.NewDagReader(fs.ctx, node, fs.ds)
+	if err == ufsio.ErrIsDir {
+		return nil, os.ErrNotExist
+	}
+
+	return r, nil
 }
 
 // Write writes the contents of the given reader to the path.
