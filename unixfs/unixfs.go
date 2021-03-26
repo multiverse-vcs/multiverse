@@ -8,8 +8,8 @@ import (
 	"path"
 	"strings"
 
-	chunker "github.com/ipfs/go-ipfs-chunker"
 	cid "github.com/ipfs/go-cid"
+	chunker "github.com/ipfs/go-ipfs-chunker"
 	ipld "github.com/ipfs/go-ipld-format"
 	ufs "github.com/ipfs/go-unixfs"
 	"github.com/ipfs/go-unixfs/importer"

@@ -1,6 +1,10 @@
 # go-git-ipfs
 
-IPFS storage for [go-git](https://github.com/go-git/go-git)
+[IPFS](https://github.com/ipfs/go-ipfs) storage for [go-git](https://github.com/go-git/go-git)
+
+### Usage
+
+See [examples](examples/) for detailed usage.
 
 ### Contributing
 
