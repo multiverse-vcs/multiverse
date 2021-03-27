@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-git/go-git/v5"
 	"github.com/ipfs/go-merkledag/dagutils"
-	ipfs "github.com/multiverse-vcs/go-git-ipfs"
+	"github.com/multiverse-vcs/go-git-ipfs/storage"
 	"github.com/multiverse-vcs/go-git-ipfs/unixfs"
 )
 
@@ -30,7 +30,7 @@ func main() {
 	}
 
 	// clone the repo into the unixfs
-	repo, err := git.CloneContext(ctx, ipfs.NewStorage(fs), nil, &opts)
+	repo, err := git.CloneContext(ctx, storage.NewStorage(fs), nil, &opts)
 	if err != nil {
 		log.Fatal(err)
 	}

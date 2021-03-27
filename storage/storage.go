@@ -1,4 +1,4 @@
-package ipfs
+package storage
 
 import (
 	"github.com/multiverse-vcs/go-git-ipfs/unixfs"

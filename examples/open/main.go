@@ -8,7 +8,7 @@ import (
 	"github.com/go-git/go-git/v5"
 	cid "github.com/ipfs/go-cid"
 	ipld "github.com/ipfs/go-ipld-format"
-	ipfs "github.com/multiverse-vcs/go-git-ipfs"
+	"github.com/multiverse-vcs/go-git-ipfs/storage"
 	"github.com/multiverse-vcs/go-git-ipfs/unixfs"
 )
 
@@ -37,7 +37,7 @@ func main() {
 	}
 
 	// open the git repo using the unixfs storage
-	repo, err := git.Open(ipfs.NewStorage(fs), nil)
+	repo, err := git.Open(storage.NewStorage(fs), nil)
 	if err != nil {
 		log.Fatal(err)
 	}

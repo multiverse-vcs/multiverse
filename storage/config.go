@@ -1,4 +1,4 @@
-package ipfs
+package storage
 
 import (
 	"github.com/go-git/go-git/v5/config"
