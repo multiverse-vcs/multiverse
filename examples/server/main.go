@@ -3,16 +3,20 @@ package main
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"log"
+	"net/http"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/ipfs/go-merkledag/dagutils"
-	"github.com/multiverse-vcs/go-git-ipfs/unixfs"
 	"github.com/multiverse-vcs/go-git-ipfs/server"
 	"github.com/multiverse-vcs/go-git-ipfs/storage"
+	"github.com/multiverse-vcs/go-git-ipfs/unixfs"
 )
 
+const bindAddr = "localhost:3030"
+
+// this example clones a repository and starts a git http server
+// that you can use to push and clone repositories to and from.
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -26,28 +30,29 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// initialize an empty repo that we can push to
-	if _, err = git.Init(storage.NewStorage(fs), nil); err != nil {
-		log.Fatal(err)
+	// clone this repo as an example
+	opts := git.CloneOptions{
+		URL: "https://github.com/multiverse-vcs/go-git-ipfs",
 	}
 
-	// get the final unixfs node
-	node, err := fs.Node()
+	// clone the repo into the unixfs
+	_, err = git.CloneContext(ctx, storage.NewStorage(fs), nil, &opts)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// add the empty repo to the dag
-	if err := ds.Add(ctx, node); err != nil {
+	// add the final unixfs node
+	id, err := fs.Save()
+	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Push new repositories to this remote")
-	fmt.Printf("http://localhost:3030/%s\n", node.Cid().String())
+	// you can now clone from this remote
+	fmt.Printf("git clone http://%s/%s\n", bindAddr, id.String())
 
 	// create the server instance
-	server := server.NewServer(ctx, ds)
+	server := server.NewServer(ds)
 
 	// start the http server
-	log.Fatal(http.ListenAndServe(":3030", server))
+	log.Fatal(http.ListenAndServe(bindAddr, server))
 }

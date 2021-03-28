@@ -68,9 +68,18 @@ func Load(ctx context.Context, ds ipld.DAGService, id cid.Cid) (*Unixfs, error) 
 	return &Unixfs{ctx, ds, dir}, nil
 }
 
-// Node returns the unixfs directory node.
-func (fs *Unixfs) Node() (ipld.Node, error) {
-	return fs.dir.GetNode()
+// Save writes the final unixfs to the dag service.
+func (fs *Unixfs) Save() (cid.Cid, error) {
+	node, err := fs.dir.GetNode()
+	if err != nil {
+		return cid.Cid{}, err
+	}
+
+	if err := fs.ds.Add(fs.ctx, node); err != nil {
+		return cid.Cid{}, err
+	}
+
+	return node.Cid(), nil
 }
 
 // Module returns a new unixfs for a submodule

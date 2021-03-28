@@ -11,6 +11,7 @@ import (
 	"github.com/multiverse-vcs/go-git-ipfs/unixfs"
 )
 
+// this example clones a repository and prints the HEAD commit.
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -36,19 +37,14 @@ func main() {
 	}
 
 	// get the final unixfs node
-	node, err := fs.Node()
+	id, err := fs.Save()
 	if err != nil {
-		log.Fatal(err)
-	}
-
-	// add the node to the dag service
-	if err := ds.Add(ctx, node); err != nil {
 		log.Fatal(err)
 	}
 
 	// print the cid so we can share it with others
 	// NOTE: this example uses an ephemeral dag service
-	fmt.Println(node.Cid().String())
+	fmt.Printf("cid %s\n", id.String())
 
 	// get the repo HEAD
 	ref, err := repo.Head()
