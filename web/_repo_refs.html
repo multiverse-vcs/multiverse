@@ -1,0 +1,9 @@
+{{ $base := joinURL `/` .User.Username .Repo.Name `tree` }}
+
+{{ range $name, $commit := .References }}
+<div class="card">
+	<a href="{{ joinURL $base $name.String }}">{{ $name.String }}</a>
+	<p>{{ $commit.Message }}</p>
+	<code>{{ $commit.Committer.When.Format "Mon Jan 02 15:04:05 -0700 2006" }}</code>
+</div>
+{{ end }}

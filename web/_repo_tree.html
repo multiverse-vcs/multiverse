@@ -1,0 +1,31 @@
+{{ $base := joinURL `/` .User.Username .Repo.Name `tree` .Rev }}
+<ul class="breadcrumbs">
+	{{ if .Path }}
+	{{ range $index, $path := breadcrumbs .Path }}
+	<li>
+		<a href="{{ joinURL $base $path }}" {{ if eq $index 0 }} class="active" {{ end }}>{{ baseURL $path }}</a>
+	</li>
+	{{ end }}
+	{{ end }}
+	<li>
+		<a href="{{ joinURL $base }}" {{ if not .Path }} class="active" {{ end }}>tree</a>
+	</li>
+</ul>
+
+{{ if .Tree }}
+<table class="tree">
+	{{ range .Tree.Entries }}
+	<tr>
+		<td>
+			<a href="{{ joinURL $base $.Path .Name }}">{{ .Name }}</a>
+		</td>
+	</tr>
+	{{ end }}
+</table>
+{{ end }}
+
+{{ if .Blob }}
+	<div class="code">
+		{{ highlight .Path .Blob }}
+	</div>
+{{ end }}

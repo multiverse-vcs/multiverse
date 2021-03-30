@@ -1,0 +1,14 @@
+{{ $base := joinURL `/` .User.Username .Repo.Name }}
+
+{{ range $index, $commit := .Commits }}
+<div class="card">
+	<a href="{{ joinURL $base `tree` $commit.Hash.String }}">{{ $commit.Hash.String }}</a>
+	<p>{{ $commit.Message }}</p>
+	<code>{{ $commit.Committer.When.Format "Mon Jan 02 15:04:05 -0700 2006" }}</code>
+</div>
+{{ end }}
+
+<div class="paginate">
+	<a href="{{ joinURL $base `logs` }}?from={{ .Prev }}" {{ if gt 0 .Prev }}class="active"{{ end }}>prev</a>
+	<a href="{{ joinURL $base `logs` }}?from={{ .Next }}" {{ if eq .Next 0 }}class="active"{{ end }}>next</a>
+</div>

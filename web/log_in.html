@@ -1,0 +1,21 @@
+{{ template "_navbar.html" . }}
+<h2>Log in to your account</h2>
+<p>or <a href="/_sign_up">sign up</a>.</p>
+
+{{ if .Error }}
+<p class="error">{{ .Error }}</p>
+{{ end }}
+
+<form method="post">
+	<label for="username">Username</label>
+	<input id="username" name="username" type="text">
+
+	<label for="password">Password</label>
+	<input id="password" name="password" type="password">
+
+	<button type="submit">
+		Log in
+	</button>
+
+	<a href="/_password_reset" style="float: right">Forgot your password?</a>
+</form>

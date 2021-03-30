@@ -1,0 +1,16 @@
+<nav class="navbar">
+	<a href="/">
+		<img height="48" src="/public/logo_pink.svg" alt="logo"/>
+	</a>
+	<div>
+		{{ if .Session }}
+		<span>Logged in as <a href="{{ joinURL `/` .Session.User.Username }}">{{ .Session.User.Username }}</a></span>
+		<span>-</span>
+		<a href="/_log_out">Log out</a>
+		{{ else }}
+		<a href="/_log_in">Log in</a>
+		<span>-</span>
+		<a href="/_sign_up">Sign up</a>
+		{{ end }}
+	</div>
+</nav>

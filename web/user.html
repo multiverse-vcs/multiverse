@@ -1,0 +1,21 @@
+{{ template "_navbar.html" . }}
+<h2>{{ .User.Username }}</h2>
+
+{{ if .Session }}
+{{ if eq .Session.UserID .User.ID }}
+<ul class="menu">
+	<li>
+		<a href="/_create_repo">create repository</a>
+	</li>
+</ul>
+{{ end }}
+{{ end }}
+
+{{ range .Repos }}
+<div class="card">
+	<a href="{{ joinURL `/` $.User.Username .Name }}">{{ .Name }}</a>
+	<p>{{ .Description }}</p>
+	<p>{{ .UpdatedAt.Format "Mon Jan 02 15:04:05 -0700 2006" }}</p>
+	<code>{{ .CID }}</code>
+</div>
+{{ end }}

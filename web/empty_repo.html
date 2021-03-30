@@ -1,0 +1,19 @@
+{{ template "_navbar.html" . }}
+<h2>
+	<a href="{{ joinURL `/` .User.Username }}">{{ .User.Username }}</a>
+	<span>/</span>
+	<span>{{ .Repo.Name }}</span>
+</h2>
+
+<h3>Create a new repository</h3>
+
+<pre class="card"><code>git init
+git add -A
+git commit -m "init"
+git remote add origin {{ .URL }}
+git push -u origin main</code></pre>
+
+<h3>Push an existing repository</h3>
+
+<pre class="card"><code>git remote add origin {{ .URL }}
+git push -u origin main</code></pre>

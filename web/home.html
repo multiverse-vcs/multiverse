@@ -1,0 +1,12 @@
+{{ template "_navbar.html" . }}
+<h2>Search all repositories</h2>
+<input type="text" placeholder="search">
+
+{{ range .Repos }}
+<div class="card">
+	<a href="{{ joinURL `/` .User.Username .Name }}">{{ .User.Username }}/{{ .Name }}</a>
+	<p>{{ .Description }}</p>
+	<p>{{ .UpdatedAt.Format "Mon Jan 02 15:04:05 -0700 2006" }}</p>
+	<code>{{ .CID }}</code>
+</div>
+{{ end }}

@@ -1,0 +1,18 @@
+{{ template "_navbar.html" . }}
+<h2>Create a repository</h2>
+
+{{ if .Error }}
+<p class="error">{{ .Error }}</p>
+{{ end }}
+
+<form method="post">
+	<label for="name">Name</label>
+	<input id="name" name="name" type="text">
+
+	<label for="description">Description (optional)</label>
+	<input id="description" name="description" type="text">
+
+	<button type="submit">
+		Create
+	</button>
+</form>

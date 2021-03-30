@@ -1,0 +1,40 @@
+{{ template "_navbar.html" . }}
+<h2>
+	<a href="{{ joinURL `/` .User.Username }}">{{ .User.Username }}</a>
+	<span>/</span>
+	<span>{{ .Repo.Name }}</span>
+</h2>
+
+<code>{{ .Repo.CID }}</code>
+
+{{ $base := joinURL `/` .User.Username .Repo.Name }}
+<ul class="menu">
+	<li>
+		<a href="{{ $base }}" {{ if eq .Tab "info" }} class="active" {{ end }}>info</a>
+	</li>
+	<li>
+		<a href="{{ joinURL $base `tree` }}" {{ if eq .Tab "tree" }} class="active" {{ end }}>tree</a>
+	</li>
+	<li>
+		<a href="{{ joinURL $base `logs` }}" {{ if eq .Tab "logs" }} class="active" {{ end }}>logs</a>
+	</li>
+	<li>
+		<a href="{{ joinURL $base `refs` }}" {{ if eq .Tab "refs" }} class="active" {{ end }}>refs</a>
+	</li>
+</ul>
+
+{{ if eq .Tab "info" }}
+	{{ template "_repo_info.html" . }}
+{{ end }}
+
+{{ if eq .Tab "tree" }}
+	{{ template "_repo_tree.html" . }}
+{{ end }}
+
+{{ if eq .Tab "logs" }}
+	{{ template "_repo_logs.html" . }}
+{{ end }}
+
+{{ if eq .Tab "refs" }}
+	{{ template "_repo_refs.html" . }}
+{{ end }}
