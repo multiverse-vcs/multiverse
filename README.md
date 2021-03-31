@@ -25,7 +25,7 @@ $ multiverse
 
 ### Contributing
 
-Found a bug or have a feature request? [Open an issue](https://github.com/multiverse-vcs/go-git-ipfs/issues/new).
+Found a bug or have a feature request? [Open an issue](https://github.com/multiverse-vcs/multiverse/issues/new).
 
 Multiverse follows the [Contributor Covenant](https://contributor-covenant.org/version/2/0/code_of_conduct/) Code of Conduct.
 
