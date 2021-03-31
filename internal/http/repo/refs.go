@@ -42,7 +42,13 @@ func (s *Repo) Refs(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	refs, err := gitutil.References(git)
+	branches, err := gitutil.Branches(git)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	tags, err := gitutil.Tags(git)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -50,7 +56,8 @@ func (s *Repo) Refs(w http.ResponseWriter, req *http.Request) {
 
 	data["User"] = user
 	data["Repo"] = repo
+	data["Tags"] = tags
+	data["Branches"] = branches
 	data["Tab"] = RepoRefsTab
-	data["References"] = refs
 	view.Render(w, "repo.html", data)
 }

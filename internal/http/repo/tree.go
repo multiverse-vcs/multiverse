@@ -26,6 +26,10 @@ func (s *Repo) Tree(w http.ResponseWriter, req *http.Request) {
 	reponame := params["repo"]
 	refpath := params["refpath"]
 
+	if refpath == "" {
+		refpath = "HEAD"
+	}
+
 	var user database.User
 	if err := user.FindByUsername(s.DB, username); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

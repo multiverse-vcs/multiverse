@@ -1,4 +1,4 @@
-{{ $base := joinURL `/` .User.Username .Repo.Name `tree` .Rev }}
+{{ $base := joinURL `/` .User.Username .Repo.Name `tree` .Ref }}
 <ul class="breadcrumbs">
 	{{ if .Path }}
 	{{ range $index, $path := breadcrumbs .Path }}
@@ -26,6 +26,6 @@
 
 {{ if .Blob }}
 	<div class="code">
-		{{ highlight .Path .Blob }}
+		{{ .Blob.Reader | highlight .Path }}
 	</div>
 {{ end }}

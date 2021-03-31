@@ -9,6 +9,6 @@
 {{ end }}
 
 <div class="paginate">
-	<a href="{{ joinURL $base `logs` }}?from={{ .Prev }}" {{ if gt 0 .Prev }}class="active"{{ end }}>prev</a>
-	<a href="{{ joinURL $base `logs` }}?from={{ .Next }}" {{ if eq .Next 0 }}class="active"{{ end }}>next</a>
+	<a href="{{ joinURL $base `logs` }}?offset={{ .Prev }}" {{ if lt .Prev 0 }}class="active"{{ end }}>prev</a>
+	<a href="{{ joinURL $base `logs` }}?offset={{ .Next }}" {{ if gt .Next (len .Commits) }}class="active"{{ end }}>next</a>
 </div>

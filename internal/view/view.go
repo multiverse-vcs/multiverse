@@ -12,11 +12,11 @@ import (
 var Development = false
 
 var funcs = template.FuncMap{
-	"markdown":    Markdown,
-	"highlight":   Highlight,
+	"markdown":    markdown,
+	"highlight":   highlight,
 	"joinURL":     path.Join,
 	"baseURL":     path.Base,
-	"breadcrumbs": Breadcrumbs,
+	"breadcrumbs": breadcrumbs,
 }
 
 var templates = template.Must(template.New("index").Funcs(funcs).ParseGlob("web/*.html"))

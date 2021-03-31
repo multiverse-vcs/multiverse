@@ -1,9 +1,17 @@
 {{ $base := joinURL `/` .User.Username .Repo.Name `tree` }}
 
-{{ range $name, $commit := .References }}
+{{ range .Branches }}
 <div class="card">
-	<a href="{{ joinURL $base $name.String }}">{{ $name.String }}</a>
-	<p>{{ $commit.Message }}</p>
-	<code>{{ $commit.Committer.When.Format "Mon Jan 02 15:04:05 -0700 2006" }}</code>
+	<a href="{{ joinURL $base .Name.String }}">{{ .Name.String }}</a>
+	<p></p>
+	<code>{{ .Hash.String }}</code>
+</div>
+{{ end }}
+
+{{ range .Tags }}
+<div class="card">
+	<a href="{{ joinURL $base .Name.String }}">{{ .Name.String }}</a>
+	<p></p>
+	<code>{{ .Hash.String }}</code>
 </div>
 {{ end }}

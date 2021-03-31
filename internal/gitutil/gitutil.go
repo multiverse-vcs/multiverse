@@ -63,33 +63,24 @@ func Branches(repo *git.Repository) ([]*plumbing.Reference, error) {
 	return branches, err
 }
 
-// References returns a map of references and commits.
-func References(repo *git.Repository) (map[plumbing.ReferenceName]*object.Commit, error) {
-	iter, err := repo.References()
+// Tags returns a list of all repository tags.
+func Tags(repo *git.Repository) ([]*plumbing.Reference, error) {
+	iter, err := repo.Tags()
 	if err != nil {
 		return nil, err
 	}
 
-	refs := make(map[plumbing.ReferenceName]*object.Commit)
+	var tags []*plumbing.Reference
 	err = iter.ForEach(func(ref *plumbing.Reference) error {
-		if ref.Type() != plumbing.HashReference {
-			return nil
-		}
-
-		commit, err := repo.CommitObject(ref.Hash())
-		if err != nil {
-			return err
-		}
-
-		refs[ref.Name()] = commit
+		tags = append(tags, ref)
 		return nil
 	})
 
-	return refs, err
+	return tags, err
 }
 
 // Logs returns a list of commits from the repo head.
-func Logs(repo *git.Repository, ref *plumbing.Reference) ([]*object.Commit, error) {
+func Logs(repo *git.Repository, ref *plumbing.Reference, offset, max int) ([]*object.Commit, error) {
 	opts := git.LogOptions{
 		From:  ref.Hash(),
 		Order: git.LogOrderCommitterTime,
@@ -102,7 +93,13 @@ func Logs(repo *git.Repository, ref *plumbing.Reference) ([]*object.Commit, erro
 
 	var commits []*object.Commit
 	err = iter.ForEach(func(commit *object.Commit) error {
-		commits = append(commits, commit)
+		switch {
+		case offset > 0:
+			offset--
+		case len(commits) < max:
+			commits = append(commits, commit)
+		}
+
 		return nil
 	})
 
@@ -136,7 +133,12 @@ func RefPath(repo *git.Repository, path string) (*plumbing.Reference, string, er
 
 // Find returns a tree or blob from the given repo at the given ref and path.
 func Find(repo *git.Repository, ref *plumbing.Reference, path string) (object.Object, error) {
-	commit, err := repo.CommitObject(ref.Hash())
+	res, err := repo.Reference(ref.Name(), true)
+	if err != nil {
+		return nil, err
+	}
+
+	commit, err := repo.CommitObject(res.Hash())
 	if err != nil {
 		return nil, err
 	}
@@ -146,6 +148,7 @@ func Find(repo *git.Repository, ref *plumbing.Reference, path string) (object.Ob
 		return nil, err
 	}
 
+	path = strings.TrimPrefix(path, "/")
 	if path == "" {
 		return tree, nil
 	}

@@ -2,6 +2,7 @@ package view
 
 import (
 	"html/template"
+	"io"
 	"path"
 	"strings"
 
@@ -23,7 +24,7 @@ var formatter = html.New(
 	html.LinkableLineNumbers(true, ""),
 )
 
-var markdown = goldmark.New(
+var goldmarkdown = goldmark.New(
 	goldmark.WithExtensions(
 		extension.GFM,
 		highlighting.NewHighlighting(
@@ -35,8 +36,13 @@ var markdown = goldmark.New(
 	),
 )
 
-// Highlight renders the given source into syntax highlighted HTML.
-func Highlight(name string, source []byte) (template.HTML, error) {
+// highlight renders the given reader into highlighted HTML.
+func highlight(name string, r io.Reader) (template.HTML, error) {
+	source, err := io.ReadAll(r)
+	if err != nil {
+		return "", err
+	}
+
 	lexer := lexers.Match(name)
 	if lexer == nil {
 		lexer = lexers.Analyse(string(source))
@@ -62,18 +68,23 @@ func Highlight(name string, source []byte) (template.HTML, error) {
 	return template.HTML(result.String()), nil
 }
 
-// Markdown renders the given markdown source into HTML.
-func Markdown(source []byte) (template.HTML, error) {
+// markdown renders the given reader into HTML.
+func markdown(r io.Reader) (template.HTML, error) {
+	source, err := io.ReadAll(r)
+	if err != nil {
+		return "", err
+	}
+
 	var result strings.Builder
-	if err := markdown.Convert(source, &result); err != nil {
+	if err := goldmarkdown.Convert(source, &result); err != nil {
 		return "", err
 	}
 
 	return template.HTML(result.String()), nil
 }
 
-// Breadcrumbs returns a list of breadcrumbs for the given URL.
-func Breadcrumbs(url string) []string {
+// breadcrumbs returns a list of breadcrumbs for the given URL.
+func breadcrumbs(url string) []string {
 	var breadcrumbs []string
 	for i := url; i != "/" && i != "."; i = path.Dir(i) {
 		breadcrumbs = append(breadcrumbs, i)

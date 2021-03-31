@@ -127,6 +127,10 @@ ul.breadcrumbs li+li:after {
 	padding: 0.5rem;
 }
 
+.markdown img {
+	max-width: 100%;
+}
+
 .markdown pre {
 	padding: 0.5rem;
 	border-radius: 3px;

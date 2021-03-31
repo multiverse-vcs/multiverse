@@ -1,8 +1,6 @@
 package git
 
 import (
-	// "io"
-	// "os"
 	"net/http"
 
 	"github.com/go-git/go-git/v5/plumbing/protocol/packp"
@@ -58,10 +56,14 @@ func (s *Git) ReceivePack(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// io.Copy(os.Stdout, req.Body)
-	// w.Header().Add("Cache-Control", "no-cache")
-	// w.Header().Add("Content-Type", "application/x-git-receive-pack-result")
-	// return
+	if req.ContentLength == 4 {
+		// If the body contains the sequence `0000`,
+		// it signals the start of chunked encoding.
+		//
+		// I have no idea where this is documented,
+		// but returning a 200 seems to work.
+		return
+	}
 
 	sessreq := packp.NewReferenceUpdateRequest()
 	if err := sessreq.Decode(req.Body); err != nil {
@@ -94,7 +96,6 @@ func (s *Git) ReceivePack(w http.ResponseWriter, req *http.Request) {
 
 	w.Header().Add("Cache-Control", "no-cache")
 	w.Header().Add("Content-Type", "application/x-git-receive-pack-result")
-	w.WriteHeader(http.StatusOK)
 
 	sessres.Encode(w)
 }

@@ -2,6 +2,7 @@ package repo
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/gorilla/mux"
@@ -24,6 +25,17 @@ func (s *Repo) Logs(w http.ResponseWriter, req *http.Request) {
 	params := mux.Vars(req)
 	username := params["user"]
 	reponame := params["repo"]
+	offset := req.URL.Query().Get("offset")
+
+	if offset == "" {
+		offset = "0"
+	}
+
+	offsetnum, err := strconv.ParseInt(offset, 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	var user database.User
 	if err := user.FindByUsername(s.DB, username); err != nil {
@@ -59,12 +71,14 @@ func (s *Repo) Logs(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	logs, err := gitutil.Logs(git, head)
+	logs, err := gitutil.Logs(git, head, int(offsetnum), RepoLogsPerPage)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	data["Commits"] = logs
+	data["Next"] = offsetnum + RepoLogsPerPage
+	data["Prev"] = offsetnum - RepoLogsPerPage
 	view.Render(w, "repo.html", data)
 }

@@ -1,7 +1,6 @@
 package http
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -42,6 +41,7 @@ func ListenAndServe(server *core.Server) error {
 
 	router.HandleFunc("/{user}", user.Read).Methods(http.MethodGet)
 	router.HandleFunc("/{user}/{repo}", repo.Read).Methods(http.MethodGet)
+	router.HandleFunc("/{user}/{repo}/tree", repo.Tree).Methods(http.MethodGet)
 	router.HandleFunc("/{user}/{repo}/tree/{refpath:.*}", repo.Tree).Methods(http.MethodGet)
 	router.HandleFunc("/{user}/{repo}/logs", repo.Logs).Methods(http.MethodGet)
 	router.HandleFunc("/{user}/{repo}/refs", repo.Refs).Methods(http.MethodGet)
@@ -49,18 +49,7 @@ func ListenAndServe(server *core.Server) error {
 	router.HandleFunc("/{user}/{repo}/git-receive-pack", git.ReceivePack).Methods(http.MethodPost)
 	router.HandleFunc("/{user}/{repo}/info/refs", git.AdvertisedReferences).Methods(http.MethodGet)
 
-	l := logger{router}
-
 	http.Handle("/public/", static)
-	http.Handle("/", l)
+	http.Handle("/", router)
 	return http.ListenAndServe(":3000", nil)
-}
-
-type logger struct {
-	router http.Handler
-}
-
-func (l logger) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	fmt.Println(req.RequestURI)
-	l.router.ServeHTTP(w, req)
 }
