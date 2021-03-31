@@ -47,6 +47,25 @@ func Open(ctx context.Context, ds ipld.DAGService, id string) (*git.Repository, 
 	return git.Open(storage.NewStorage(fs), nil)
 }
 
+// HeadOrDefault returns the head or default branch for the repo.
+func HeadOrDefault(repo *git.Repository) (*plumbing.Reference, error) {
+	head, err := repo.Head()
+	if err == nil {
+		return head, nil
+	}
+
+	branches, err := Branches(repo)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(branches) == 0 {
+		return nil, nil
+	}
+
+	return branches[0], nil
+}
+
 // Branches returns a list of all repository branches.
 func Branches(repo *git.Repository) ([]*plumbing.Reference, error) {
 	iter, err := repo.Branches()

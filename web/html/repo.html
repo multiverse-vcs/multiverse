@@ -5,9 +5,8 @@
 	<span>{{ .Repo.Name }}</span>
 </h2>
 
-<a href="https://ipfs.io/ipfs/{{ .Repo.CID }}">
-	<code>/ipfs/{{ .Repo.CID }}</code>
-</a>
+<pre class="card"><code>ipfs pin add /ipfs/{{ .Repo.CID }}
+git clone http://localhost:3000/{{ joinURL .User.Username .Repo.Name }}</code></pre>
 
 {{ $base := joinURL `/` .User.Username .Repo.Name }}
 <ul class="menu">

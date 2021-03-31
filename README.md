@@ -15,9 +15,10 @@ Once your code is uploaded you can use pinning services or filecoin for long ter
 Go 1.16 or higher required.
 
 ```bash
-git clone https://github.com/multiverse-vcs/multiverse
-cd multiverse
-go install ./cmd/multiverse
+$ git clone https://github.com/multiverse-vcs/multiverse
+$ cd multiverse
+$ go install ./cmd/multiverse
+$ multiverse
 ```
 
 ### Contributing

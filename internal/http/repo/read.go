@@ -3,7 +3,6 @@ package repo
 import (
 	"net/http"
 
-	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/gorilla/mux"
 
 	"github.com/multiverse-vcs/go-git-ipfs/internal/database"
@@ -46,14 +45,14 @@ func (s *Repo) Read(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	head, err := git.Head()
-	if err == plumbing.ErrReferenceNotFound {
-		view.Render(w, "empty_repo.html", data)
+	head, err := gitutil.HeadOrDefault(git)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if head == nil {
+		view.Render(w, "empty_repo.html", data)
 		return
 	}
 
