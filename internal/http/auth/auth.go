@@ -5,4 +5,3 @@ import (
 )
 
 type Auth core.Server
-

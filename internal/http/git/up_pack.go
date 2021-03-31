@@ -6,8 +6,8 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/protocol/packp"
 	"github.com/go-git/go-git/v5/plumbing/transport"
 	"github.com/go-git/go-git/v5/plumbing/transport/server"
-	cid "github.com/ipfs/go-cid"
 	"github.com/gorilla/mux"
+	cid "github.com/ipfs/go-cid"
 
 	"github.com/multiverse-vcs/go-git-ipfs/internal/database"
 )
@@ -19,7 +19,7 @@ func (s *Git) UploadPack(w http.ResponseWriter, req *http.Request) {
 	params := mux.Vars(req)
 	username := params["user"]
 	reponame := params["repo"]
-	
+
 	var user database.User
 	if err := user.FindByUsername(s.DB, username); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

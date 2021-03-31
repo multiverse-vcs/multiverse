@@ -15,11 +15,22 @@
 {{ if .Tree }}
 <table class="tree">
 	{{ range .Tree.Entries }}
+	{{ if not .Mode.IsFile }}
 	<tr>
 		<td>
 			<a href="{{ joinURL $base $.Path .Name }}">{{ .Name }}</a>
 		</td>
 	</tr>
+	{{ end }}
+	{{ end }}
+	{{ range .Tree.Entries }}
+	{{ if .Mode.IsFile }}
+	<tr>
+		<td>
+			<a href="{{ joinURL $base $.Path .Name }}">{{ .Name }}</a>
+		</td>
+	</tr>
+	{{ end }}
 	{{ end }}
 </table>
 {{ end }}

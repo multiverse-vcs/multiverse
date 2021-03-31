@@ -6,8 +6,8 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/protocol/packp"
 	"github.com/go-git/go-git/v5/plumbing/transport"
 	"github.com/go-git/go-git/v5/plumbing/transport/server"
-	cid "github.com/ipfs/go-cid"
 	"github.com/gorilla/mux"
+	cid "github.com/ipfs/go-cid"
 
 	"github.com/multiverse-vcs/go-git-ipfs/internal/database"
 )

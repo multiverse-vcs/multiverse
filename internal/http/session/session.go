@@ -33,8 +33,8 @@ func Set(w http.ResponseWriter, db *gorm.DB, sess *database.Session) error {
 	}
 
 	cookie := http.Cookie{
-		Name: CookieName,
-		Value: sess.ID,
+		Name:     CookieName,
+		Value:    sess.ID,
 		HttpOnly: true,
 	}
 
@@ -45,7 +45,7 @@ func Set(w http.ResponseWriter, db *gorm.DB, sess *database.Session) error {
 // Clear removes the session cookie.
 func Clear(w http.ResponseWriter) {
 	cookie := http.Cookie{
-		Name: CookieName,
+		Name:   CookieName,
 		MaxAge: -1,
 	}
 

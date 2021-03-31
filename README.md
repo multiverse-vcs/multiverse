@@ -1,10 +1,24 @@
-# go-git-ipfs
+# Multiverse
 
-[IPFS](https://github.com/ipfs/go-ipfs) storage for [go-git](https://github.com/go-git/go-git)
+A git compatible decentralized code hosting server.
 
-### Usage
+### About
 
-See [examples](examples/) for detailed usage.
+Multiverse leverages the [go-git](https://github.com/go-git/go-git) storer interface to provide an [IPFS](https://github.com/ipfs/go-ipfs) storage backend for your git repositories.
+
+The server is a self contained binary with an embedded web server, database, and IPFS node.
+
+Once your code is uploaded you can use pinning services or filecoin for long term archival.
+
+### Install
+
+Go 1.16 or higher required.
+
+```bash
+git clone https://github.com/multiverse-vcs/multiverse
+cd multiverse
+go install ./cmd/multiverse
+```
 
 ### Contributing
 

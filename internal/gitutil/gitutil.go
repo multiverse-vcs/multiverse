@@ -106,7 +106,6 @@ func Logs(repo *git.Repository, ref *plumbing.Reference, offset, max int) ([]*ob
 	return commits, err
 }
 
-
 // RefPath splits a path into the ref and path parts.
 func RefPath(repo *git.Repository, path string) (*plumbing.Reference, string, error) {
 	iter, err := repo.References()

@@ -53,10 +53,10 @@ func (s *Repo) CreateForm(w http.ResponseWriter, req *http.Request) {
 	}
 
 	repo = database.Repo{
-		Name:          name,
-		Description:   description,
-		UserID:        sess.UserID,
-		CID:           node.Cid().String(),
+		Name:        name,
+		Description: description,
+		UserID:      sess.UserID,
+		CID:         node.Cid().String(),
 	}
 
 	if err := repo.Create(s.DB); err != nil {

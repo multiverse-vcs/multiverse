@@ -5,8 +5,8 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/multiverse-vcs/go-git-ipfs/internal/http/session"
 	"github.com/multiverse-vcs/go-git-ipfs/internal/database"
+	"github.com/multiverse-vcs/go-git-ipfs/internal/http/session"
 	"github.com/multiverse-vcs/go-git-ipfs/internal/view"
 )
 

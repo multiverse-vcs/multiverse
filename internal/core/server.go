@@ -8,11 +8,9 @@ import (
 
 	config "github.com/ipfs/go-ipfs-config"
 	"github.com/ipfs/go-ipfs/core"
-	"github.com/ipfs/go-ipfs/core/coreapi"
 	libp2p "github.com/ipfs/go-ipfs/core/node/libp2p"
 	"github.com/ipfs/go-ipfs/plugin/loader"
 	"github.com/ipfs/go-ipfs/repo/fsrepo"
-	iface "github.com/ipfs/interface-go-ipfs-core"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
@@ -20,7 +18,6 @@ import (
 )
 
 type Server struct {
-	API  iface.CoreAPI
 	Node *core.IpfsNode
 	DB   *gorm.DB
 }
@@ -75,18 +72,12 @@ func NewServer(ctx context.Context) (*Server, error) {
 		return nil, err
 	}
 
-	api, err := coreapi.NewCoreAPI(node)
-	if err != nil {
-		return nil, err
-	}
-
 	db, err := database.Open(sqlite.Open(dpath))
 	if err != nil {
 		return nil, err
 	}
 
 	return &Server{
-		API:  api,
 		Node: node,
 		DB:   db,
 	}, nil
