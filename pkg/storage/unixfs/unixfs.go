@@ -154,15 +154,15 @@ func (fs *Unixfs) walkPath(fpath string, dir ufsio.Directory, cb WalkFun) error 
 		}
 
 		if !fsnode.IsDir() {
-			return nil
+			continue
 		}
 
-		dir, err = ufsio.NewDirectoryFromNode(fs.ds, subnode)
+		child, err := ufsio.NewDirectoryFromNode(fs.ds, subnode)
 		if err != nil {
 			return err
 		}
 
-		if err := fs.walkPath(subpath, dir, cb); err != nil {
+		if err := fs.walkPath(subpath, child, cb); err != nil {
 			return err
 		}
 	}

@@ -5,7 +5,9 @@
 	<span>{{ .Repo.Name }}</span>
 </h2>
 
-<code>{{ .Repo.CID }}</code>
+<a href="https://ipfs.io/ipfs/{{ .Repo.CID }}">
+	<code>/ipfs/{{ .Repo.CID }}</code>
+</a>
 
 {{ $base := joinURL `/` .User.Username .Repo.Name }}
 <ul class="menu">

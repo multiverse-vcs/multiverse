@@ -37,7 +37,6 @@ func (s *Repo) Read(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	data["URL"] = req.URL.String()
 	data["User"] = user
 	data["Repo"] = repo
 
