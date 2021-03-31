@@ -38,5 +38,5 @@ func (s *Auth) LogInForm(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	http.Redirect(w, req, "/", http.StatusSeeOther)
+	http.Redirect(w, req, "/"+user.Username, http.StatusSeeOther)
 }
