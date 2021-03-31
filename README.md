@@ -1,5 +1,7 @@
 # Multiverse
 
+[![Gitter](https://badges.gitter.im/multiverse-vcs/community.svg)](https://gitter.im/multiverse-vcs/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 A git compatible decentralized code hosting server.
 
 ![preview](assets/preview.png)
