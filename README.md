@@ -2,6 +2,8 @@
 
 A git compatible decentralized code hosting server.
 
+![preview](assets/preview.png)
+
 ### About
 
 Multiverse leverages the [go-git](https://github.com/go-git/go-git) storer interface to provide an [IPFS](https://github.com/ipfs/go-ipfs) storage backend for your git repositories.
